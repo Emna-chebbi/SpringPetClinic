@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PetClinic Selenium Suite">
+  <test name="UI Tests">
+    <classes>
+      <class name="com.petclinic.selenium.HomePageTest"/>
+      <class name="com.petclinic.selenium.VetsPageTest"/>
+      <class name="com.petclinic.selenium.OwnersPageTest"/>
+      <class name="com.petclinic.selenium.AddOwnerTest"/>
+      <class name="com.petclinic.selenium.FindOwnerTest"/>
+    </classes>
+  </test>
+</suite>
