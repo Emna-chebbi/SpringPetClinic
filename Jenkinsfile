@@ -9,13 +9,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/Emna-chebbi/SpringPetClinic.git'
-            }
-        }
-
         stage('Build JAR') {
             steps {
                 sh 'mvn clean package -DskipTests'
