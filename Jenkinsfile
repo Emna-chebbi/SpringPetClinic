@@ -5,6 +5,7 @@ pipeline {
         DOCKER_IMAGE = "emna19/springpetclinic"
         DOCKER_TAG = "latest"
         DOCKER_CREDS = credentials('22fac1e2-e9b5-415f-b8ce-38633a4140eb')
+        KUBECONFIG = "/home/vagrant/.kube/config"
     }
 
     stages {
@@ -57,9 +58,11 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 echo 'Deploying to Kubernetes...'
+                sh 'echo Using kubeconfig: $KUBECONFIG'
                 sh 'kubectl get pods'
                 sh 'kubectl apply -f k8s/deployment.yaml'
                 sh 'kubectl apply -f k8s/service.yaml'
+                sh 'kubectl get pods'
             }
         }
     }
@@ -73,4 +76,3 @@ pipeline {
         }
     }
 }
-
