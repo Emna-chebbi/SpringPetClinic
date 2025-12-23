@@ -72,7 +72,26 @@ pipeline {
             echo 'Pipeline executed successfully!'
         }
         failure {
-            echo 'Pipeline failed'
-        }
+            emailext(
+            subject: "$JOB_NAME - Build #$BUILD_NUMBER - FAILED",
+            body: """
+Module: DevOps
+Student: Emna Chebbi
+
+Job Name: $JOB_NAME
+Build Number: $BUILD_NUMBER
+
+Build URL:
+$BUILD_URL
+
+Cause of Failure:
+Please check the console output.
+
+==================== LOGS ====================
+$BUILD_LOG
+================================================
+""",
+            to: "emna.chebby19@gmail.com"
+        )
     }
 }
