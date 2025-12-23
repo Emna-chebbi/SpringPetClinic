@@ -20,10 +20,18 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
                     mvn sonar:sonar \
-                    -Dsonar.projectKey=springpetclinic \
-                    -Dsonar.projectName=springpetclinic \
-                    -Dsonar.java.binaries=target
+                      -Dsonar.projectKey=springpetclinic \
+                      -Dsonar.projectName=springpetclinic \
+                      -Dsonar.java.binaries=target
                     '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
@@ -45,14 +53,24 @@ pipeline {
                 sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo 'Deploying to Kubernetes...'
+                sh 'kubectl get pods'
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
+            }
+        }
     }
 
     post {
         success {
-            echo 'Pipeline executed successfully with SonarQube!'
+            echo 'Pipeline executed successfully!'
         }
         failure {
             echo 'Pipeline failed'
         }
     }
 }
+
