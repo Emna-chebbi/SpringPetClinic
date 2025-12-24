@@ -70,6 +70,19 @@ pipeline {
     post {
         success {
             echo 'Pipeline executed successfully!'
+            emailext(
+                subject: "$JOB_NAME - Build #$BUILD_NUMBER - SUCCESS",
+                body: """
+✅ Pipeline executed successfully!
+
+Job Name: $JOB_NAME
+Build Number: $BUILD_NUMBER
+
+Build URL:
+$BUILD_URL
+""",
+                to: "emna.chebby19@gmail.com"
+            )
         }
         failure {
             emailext(
@@ -96,3 +109,4 @@ $BUILD_LOG
     }
 }
 }
+
