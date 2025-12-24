@@ -67,23 +67,28 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo 'Pipeline executed successfully!'
-            emailext(
-                subject: "$JOB_NAME - Build #$BUILD_NUMBER - SUCCESS",
-                body: """
-✅ Pipeline executed successfully!
+post {
+    success {
+        emailext(
+            to: 'emna.chebby19@gmail.com',
+            subject: "Jenkins Pipeline SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """
+Hello Emna,
 
-Job Name: $JOB_NAME
-Build Number: $BUILD_NUMBER
+Your Jenkins pipeline executed successfully.
 
-Build URL:
-$BUILD_URL
+Job Name : ${env.JOB_NAME}
+Build No : ${env.BUILD_NUMBER}
+Build URL: ${env.BUILD_URL}
+
+Everything is working correctly.
+
+Regards,
+Jenkins
 """,
-                to: "emna.chebby19@gmail.com"
-            )
-        }
+            mimeType: 'text/plain'
+        )
+    }
         failure {
             emailext(
             subject: "$JOB_NAME - Build #$BUILD_NUMBER - FAILED",
